@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0"
+           odl:restart-dependents-on-updates="true">
+
+    <!-- Reference the DOMDataBroker service from ODL -->
+    <reference id="domDataBroker" interface="org.opendaylight.controller.md.sal.dom.api.DOMDataBroker" />
+
+    <!-- Initialize the SMART Provider -->
+    <bean id="smartProvider" class="org.smart.impl.SmartProvider" init-method="init" destroy-method="close">
+        <argument ref="domDataBroker" />
+    </bean>
+
+</blueprint>

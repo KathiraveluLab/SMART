@@ -1,0 +1,66 @@
+module smart {
+    yang-version 1;
+    namespace "urn:opendaylight:params:xml:ns:yang:smart";
+    prefix "smart";
+
+    revision "2017-02-15" {
+        description "Initial revision of SMART model";
+    }
+
+    typedef flow-id {
+        type string;
+    }
+
+    container smart-context {
+        list flows {
+            key "id";
+            leaf id {
+                type flow-id;
+            }
+            leaf origin {
+                type string;
+            }
+            leaf destination {
+                type string;
+            }
+            container status {
+                leaf sequence-number {
+                    type uint32;
+                }
+                leaf parent-flow {
+                    type flow-id;
+                }
+                leaf is-cloned {
+                    type boolean;
+                    default false;
+                }
+            }
+            container policies {
+                leaf threshold-ms {
+                    type uint32;
+                    description "Hard SLA limit in milliseconds";
+                }
+                leaf soft-threshold-ms {
+                    type uint32;
+                    description "Soft SLA limit (fraction of hard limit) to trigger SMART";
+                }
+            }
+        }
+    }
+
+    rpc trigger-smart-enhancement {
+        input {
+            leaf flow-id {
+                type flow-id;
+            }
+            leaf breakpoint-node {
+                type string;
+            }
+        }
+        output {
+            leaf status {
+                type string;
+            }
+        }
+    }
+}
