@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # AMQP Broker (ActiveMQ Classic) for Messaging4Transport functionality
+  activemq:
+    image: apache/activemq-classic:latest
+    container_name: smart-activemq
+    ports:
+      - "5672:5672"   # AMQP 1.0
+      - "8161:8161"   # Web Console
+      - "61616:61616" # OpenWire
+    environment:
+      - ACTIVEMQ_ADMIN_USER=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: OpenDaylight container (Requires custom build for Beryllium)
+  # opendaylight:
+  #   image: opendaylight/opendaylight:0.4.0 # Beryllium
+  #   container_name: smart-odl
+  #   ports:
+  #     - "8181:8181" # RESTCONF
+  #     - "6633:6633" # OpenFlow
+  #     - "8101:8101" # Karaf CLI
