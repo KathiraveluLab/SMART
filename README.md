@@ -15,6 +15,30 @@ SMART (SDN Middlebox Architecture for Resilient Transfers) is a research framewo
 - `impl/`: The core implementation of SMART algorithms and ODL/AMQP integration.
 - `scripts/`: SENDIM-style Python scripts for Mininet emulation and logic validation.
 
+## Build & Installation
+### Prerequisites
+- Java 8 (for ODL Beryllium compatibility)
+- Maven 3.8.7+
+- Docker & Docker Compose
+
+### Build the Project
+```bash
+mvn clean install -DskipTests
+```
+
+## Verification
+### Unit Tests
+Run the logic verification tests:
+```bash
+mvn test -pl impl
+```
+
+### SENDIM Emulation
+Demonstrate the selective redundancy behavior:
+```bash
+python3 scripts/run_smart_emulation.py
+```
+
 ## Deployment with Docker
 To simplify the setup of the AMQP broker and other dependencies, a `docker-compose.yml` is provided.
 
