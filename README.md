@@ -10,12 +10,12 @@ SMART (SDN Middlebox Architecture for Resilient Transfers) is a research framewo
 - **Schema-Agnostic AMQP Propagation**: Integration with **Messaging4Transport** using **Apache Qpid JMS** and **DOMDataBroker** for high-performance, schema-agnostic flow management.
 - **SENDIM-Ready Verification**: Seamless verification via unit tests and SENDIM-style Python emulation.
 
-## 📁 Project Structure
+## Project Structure
 - `api/`: contains the YANG models (`smart.yang`) for flow data and policy definitions.
 - `impl/`: The core implementation of SMART algorithms and ODL/AMQP integration.
 - `scripts/`: SENDIM-style Python scripts for Mininet emulation and logic validation.
 
-## 🛠️ Build & Installation
+## Build & Installation
 ### Prerequisites
 - Java 8 (for ODL Beryllium compatibility)
 - Maven 3.8.7+
@@ -26,7 +26,7 @@ SMART (SDN Middlebox Architecture for Resilient Transfers) is a research framewo
 mvn clean install -DskipTests
 ```
 
-## 🧪 Verification
+## Verification
 ### Unit Tests
 Run the logic verification tests:
 ```bash
