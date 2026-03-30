@@ -27,7 +27,15 @@ public class BreakpointManager {
     private static final QName INVENTORY_NODE_CONNECTOR = QName.create("urn:opendaylight:inventory", "2013-08-19", "node-connector");
     private static final QName INVENTORY_NODE_CONNECTOR_ID = QName.create("urn:opendaylight:inventory", "2013-08-19", "id");
     private static final QName FLOW_CAPABLE_STATS = QName.create("urn:opendaylight:port:statistics", "2013-12-14", "flow-capable-node-connector-statistics");
-    private static final QName BYTES_TRANSMITTED = QName.create("urn:opendaylight:port:statistics", "2013-12-14", "bytes"); // Nested in transmitted container usually
+    private static final QName BYTES_CONTAINER = QName.create("urn:opendaylight:port:statistics", "2013-12-14", "bytes");
+    private static final QName TRANSMITTED_LEAF = QName.create("urn:opendaylight:port:statistics", "2013-12-14", "transmitted");
+
+    /**
+     * Default constructor for testing and scenarios with no DOM access.
+     */
+    public BreakpointManager() {
+        this.domDataBroker = null;
+    }
 
     public BreakpointManager(DOMDataBroker domDataBroker) {
         this.domDataBroker = domDataBroker;
@@ -91,11 +99,16 @@ public class BreakpointManager {
     }
 
     private long extractBytes(DataContainerNode<?> container) {
-        // Real implementation would look deeper into containers (e.g., 'bytes/transmitted')
-        // Using a leaf lookup for demonstration
-        Optional<NormalizedNode<?, ?>> bytesLeaf = container.getChild(new YangInstanceIdentifier.NodeIdentifier(BYTES_TRANSMITTED));
-        if (bytesLeaf.isPresent() && bytesLeaf.get() instanceof LeafNode) {
-            return (Long) ((LeafNode<?>) bytesLeaf.get()).getValue();
+        // Real implementation: flow-capable-node-connector-statistics/bytes/transmitted
+        Optional<NormalizedNode<?, ?>> bytesContainer = container.getChild(new YangInstanceIdentifier.NodeIdentifier(BYTES_CONTAINER));
+        
+        if (bytesContainer.isPresent() && bytesContainer.get() instanceof DataContainerNode) {
+            DataContainerNode<?> bytesData = (DataContainerNode<?>) bytesContainer.get();
+            Optional<NormalizedNode<?, ?>> transmittedLeaf = bytesData.getChild(new YangInstanceIdentifier.NodeIdentifier(TRANSMITTED_LEAF));
+            
+            if (transmittedLeaf.isPresent() && transmittedLeaf.get() instanceof LeafNode) {
+                return (Long) ((LeafNode<?>) transmittedLeaf.get()).getValue();
+            }
         }
         return 0;
     }
