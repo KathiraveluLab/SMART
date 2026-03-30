@@ -1,8 +1,6 @@
 # SMART: SDN Middlebox Architecture for Resilient Transfers
 
-SMART (SDN Middlebox Architecture for Resilient Transfers) is a research framework for achieving differentiated Quality of Service (QoS) in multi-tenant clouds using selective redundancy.
-
-
+SMART is a research framework for achieving differentiated Quality of Service (QoS) in multi-tenant clouds using selective redundancy.
 
 ## Key Features
 - **Selective Redundancy Algorithms**: Adaptive logic for `CLONE`, `DIVERT`, and `REPLICATE` actions based on SLA soft-thresholds.
