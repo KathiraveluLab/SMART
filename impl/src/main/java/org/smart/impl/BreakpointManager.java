@@ -2,10 +2,10 @@ package org.smart.impl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.opendaylight.controller.md.sal.dom.api.DOMDataBroker;
-import org.opendaylight.controller.md.sal.dom.api.DOMDataReadOnlyTransaction;
-import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
+import com.google.common.base.Optional;
+import org.opendaylight.mdsal.dom.api.DOMDataBroker;
+import org.opendaylight.mdsal.dom.api.DOMDataTreeReadTransaction;
+import org.opendaylight.mdsal.common.api.LogicalDatastoreType;
 import org.opendaylight.yangtools.yang.common.QName;
 import org.opendaylight.yangtools.yang.data.api.YangInstanceIdentifier;
 import org.opendaylight.yangtools.yang.data.api.schema.NormalizedNode;
@@ -83,7 +83,7 @@ public class BreakpointManager {
             .node(FLOW_CAPABLE_STATS)
             .build();
 
-        try (DOMDataReadOnlyTransaction tx = domDataBroker.newReadOnlyTransaction()) {
+        try (DOMDataTreeReadTransaction tx = domDataBroker.newReadOnlyTransaction()) {
             Optional<NormalizedNode<?, ?>> result = tx.read(LogicalDatastoreType.OPERATIONAL, path).get();
             
             if (result.isPresent() && result.get() instanceof DataContainerNode) {
@@ -100,11 +100,11 @@ public class BreakpointManager {
 
     private long extractBytes(DataContainerNode<?> container) {
         // Real implementation: flow-capable-node-connector-statistics/bytes/transmitted
-        Optional<NormalizedNode<?, ?>> bytesContainer = container.getChild(new YangInstanceIdentifier.NodeIdentifier(BYTES_CONTAINER));
+        Optional<? extends NormalizedNode<?, ?>> bytesContainer = container.getChild(new YangInstanceIdentifier.NodeIdentifier(BYTES_CONTAINER));
         
         if (bytesContainer.isPresent() && bytesContainer.get() instanceof DataContainerNode) {
             DataContainerNode<?> bytesData = (DataContainerNode<?>) bytesContainer.get();
-            Optional<NormalizedNode<?, ?>> transmittedLeaf = bytesData.getChild(new YangInstanceIdentifier.NodeIdentifier(TRANSMITTED_LEAF));
+            Optional<? extends NormalizedNode<?, ?>> transmittedLeaf = bytesData.getChild(new YangInstanceIdentifier.NodeIdentifier(TRANSMITTED_LEAF));
             
             if (transmittedLeaf.isPresent() && transmittedLeaf.get() instanceof LeafNode) {
                 return (Long) ((LeafNode<?>) transmittedLeaf.get()).getValue();

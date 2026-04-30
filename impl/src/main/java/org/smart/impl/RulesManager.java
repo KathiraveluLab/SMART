@@ -2,9 +2,9 @@ package org.smart.impl;
 
 import javax.jms.*;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.opendaylight.controller.md.sal.dom.api.DOMDataBroker;
-import org.opendaylight.controller.md.sal.dom.api.DOMDataWriteTransaction;
-import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
+import org.opendaylight.mdsal.dom.api.DOMDataBroker;
+import org.opendaylight.mdsal.dom.api.DOMDataTreeWriteTransaction;
+import org.opendaylight.mdsal.common.api.LogicalDatastoreType;
 import org.opendaylight.yangtools.yang.common.QName;
 import org.opendaylight.yangtools.yang.data.api.YangInstanceIdentifier;
 import org.opendaylight.yangtools.yang.data.api.schema.NormalizedNode;
@@ -100,7 +100,7 @@ public class RulesManager implements MessageListener {
             .build();
 
         // 3. Execute DOM Transaction
-        DOMDataWriteTransaction tx = domDataBroker.newWriteOnlyTransaction();
+        DOMDataTreeWriteTransaction tx = domDataBroker.newWriteOnlyTransaction();
         tx.merge(LogicalDatastoreType.OPERATIONAL, path, statusNode);
         
         try {
